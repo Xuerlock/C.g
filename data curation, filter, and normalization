@@ -1,0 +1,16 @@
+library(GEOquery)
+
+# Specify the GEO accession number (e.g., GSEXXXXX)
+geo_id <- "GSEXXXX"
+
+# Download the dataset
+gse_data <- getGEO(geo_id, GSEMatrix = TRUE)
+
+# Access the expression matrix
+expression_matrix <- exprs(gse_data[[1]])
+
+# View the expression matrix
+head(expression_matrix)
+
+# Save it to a CSV file
+write.csv(expression_matrix, "expression_matrix.csv")

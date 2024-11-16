@@ -1,3 +1,11 @@
+# example
+wget https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR109/032/SRR10918532/SRR10918532.fastq.gz
+
+
+
+
+
+
 library(GEOquery)
 
 # Specify the GEO accession number (e.g., GSEXXXXX)

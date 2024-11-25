@@ -6,7 +6,7 @@ bwa index GCA_000011325.1_ASM1132v1_genomic.fna
 bwa mem -t 8 GCA_000011325.1_ASM1132v1_genomic.fna SRR10918522.fastq > SRR10918522.bwa.sam
 featureCounts -a genomic.gtf -o SRR10918521.bwa.txt -M -O -t CDS -g gene_id SRR10918521.bwa.sam
 
-# calculate the TPM level in R by 'TPM.R'
+# calculate the TPM level in R by 'TPM_count.R'
 
 
 # extract the promoter region sequence

@@ -1,6 +1,37 @@
 # example
 wget https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR109/032/SRR10918532/SRR10918532.fastq.gz
 
+# mapped to the reference sequence by bwa, and count the counts by featureCounts with -M -O
+bwa index GCA_000011325.1_ASM1132v1_genomic.fna
+bwa mem -t 8 GCA_000011325.1_ASM1132v1_genomic.fna SRR10918522.fastq > SRR10918522.bwa.sam
+featureCounts -a genomic.gtf -o SRR10918521.bwa.txt -M -O -t CDS -g gene_id SRR10918521.bwa.sam
+
+# calculate the TPM level in R by 'TPM.R'
+
+
+# extract the promoter region sequence
+awk '$3 == "CDS" {print $1, $7, $4, $5, $9}' OFS="\t" genomic.gff > cds_regions.bed
+
+awk -v OFS="\t" '{ 
+    if ($2 == "+") { 
+        print $1, ($3 - 1001 > 0 ? $3 - 1001 : 0), $3 - 1, $4, $5, $2
+    } else { 
+        print $1, $4 + 1, $4 + 1000, $4, $5, $2
+    } 
+}' cds_regions.bed > promoters.bed
+
+## Extract the promoter sequence.
+bedtools getfasta -fi GCA_000011325.1_ASM1132v1_genomic.fna -bed promoters.bed -fo promoters.fasta -name
+
+
+## Rename the promoter sequence names.
+awk 'BEGIN {i=1} 
+     /^>/ { 
+        printf(">Cgl%04d\n", i++);
+     }
+     /^[^>]/ { 
+        print $0; 
+     }' promoters.fasta > updated_promoters.fasta
 
 
 
